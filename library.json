@@ -1,0 +1,29 @@
+{
+    "name": "glow-color",
+    "version": "0.5.0",
+    "description": "color libraries",
+    "keywords": "glow color hsv",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/centretown/glow-strip.git"
+    },
+    "authors": [
+        {
+            "name": "Dave Marsh",
+            "email": "davemarsh77@gmail.com",
+            "url": "https://github.com/centretown",
+            "maintainer": true
+        }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/centretown/glow-color",
+    "dependencies": {
+        "centretown/glow-base": "https://github.com/centretown/glow-base.git@^0.5.14",
+        "bblanchon/ArduinoJson": "bblanchon/ArduinoJson@^6.19.4"
+    },
+    "frameworks": [
+        "arduino",
+        "native"
+    ],
+    "platforms": "*"
+}
