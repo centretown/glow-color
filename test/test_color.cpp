@@ -6,8 +6,9 @@
 #include "BlinkActivity.h"
 #include "Benchmark.h"
 
-void testColorHsv();
+void testColorHsvSteps();
 void testColorDetails();
+void testHSVFunctions();
 
 glow::PinDevice blinkPin;
 glow::BlinkSettings blink(&blinkPin);
@@ -18,7 +19,8 @@ void run()
 {
     UNITY_BEGIN();
     testColorDetails();
-    testColorHsv();
+    testColorHsvSteps();
+    testHSVFunctions();
     UNITY_END();
 }
 

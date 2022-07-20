@@ -5,26 +5,13 @@
 #include <unity.h>
 
 #include "ColorHSV.h"
-#include "hsvTest.h"
+#include "hsv_test.h"
 
 using color::Color;
 using color::color_pack;
 using color::ColorHSV;
 
-void testHsvStepsOrg(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
-{
-    uint8_t red, green, blue;
-    red = green = blue = 0;
-    uint16_t mapped_hue_org = map_hue(tHue);
-    map_hue_color(mapped_hue_org,
-                  red,
-                  green,
-                  blue);
-    apply_saturation_value(tSaturation, tValue,
-                           red, green, blue);
-}
-
-void testHsvStepsNew(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
+void testHsvSteps(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
 {
     char buffer[32] = {0};
     uint8_t red, green, blue;
@@ -87,26 +74,22 @@ void testHsvSteps()
         for (uint8_t j = 0; j < satCount; j++)
         {
             tSaturation = satTable[j];
-            testHsvStepsOrg(tHue, tSaturation, tValue);
-            testHsvStepsNew(tHue, tSaturation, tValue);
+            testHsvSteps(tHue, tSaturation, tValue);
             for (uint8_t k = 0; k < valCount; k++)
             {
                 tValue = valTable[k];
-                testHsvStepsOrg(tHue, tSaturation, tValue);
-                testHsvStepsNew(tHue, tSaturation, tValue);
+                testHsvSteps(tHue, tSaturation, tValue);
             }
         }
 
         for (uint8_t k = 0; k < valCount; k++)
         {
             tValue = valTable[k];
-            testHsvStepsOrg(tHue, tSaturation, tValue);
-            testHsvStepsNew(tHue, tSaturation, tValue);
+            testHsvSteps(tHue, tSaturation, tValue);
             for (uint8_t j = 0; j < satCount; j++)
             {
                 tSaturation = satTable[j];
-                testHsvStepsOrg(tHue, tSaturation, tValue);
-                testHsvStepsNew(tHue, tSaturation, tValue);
+                testHsvSteps(tHue, tSaturation, tValue);
             }
         }
     }
@@ -118,12 +101,11 @@ void testHsvSingleStep()
     uint8_t tSaturation = 127;
     uint8_t tValue = 127;
 
-    testHsvStepsOrg(tHue, tSaturation, tValue);
-    testHsvStepsNew(tHue, tSaturation, tValue);
+    testHsvSteps(tHue, tSaturation, tValue);
 }
 
-void testColorHsv()
+void testColorHsvSteps()
 {
-    RUN_TEST(testHsvSingleStep);
     RUN_TEST(testHsvSteps);
+    RUN_TEST(testHsvSingleStep);
 }

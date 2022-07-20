@@ -39,8 +39,8 @@ namespace color
         ColorHSV(color_hsv_pack pack = 0) : pack(pack) {}
 
         ColorHSV(uint16_t hue,
-                      uint8_t saturation,
-                      uint8_t value)
+                 uint8_t saturation,
+                 uint8_t value)
         {
             HSV(hue, saturation, value);
         }
@@ -79,7 +79,13 @@ namespace color
         void Copy(ColorHSV &v) { pack = v.Pack(); }
 
         // RGB conversion
-        color_pack ToRGB();
+        color_pack ToRGB()
+        {
+            uint16_t mappedHue = mapHue();
+            color_pack pack = mapHueToColor(mappedHue);
+            pack = applySaturationValue(pack);
+            return pack;
+        }
 
         // private:
         inline uint16_t mapHue()

@@ -71,6 +71,14 @@ namespace color
     private:
         union
         {
+
+            struct
+            {
+                uint8_t blue;
+                uint8_t green;
+                uint8_t red;
+                uint8_t white;
+            };
             color_rgbw rgbw;
             color_pack pack;
             color_element elements[4];
