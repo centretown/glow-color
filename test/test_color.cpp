@@ -9,6 +9,7 @@
 void testColorHsvSteps();
 void testColorDetails();
 void testHSVFunctions();
+void testColorPalettes();
 
 glow::PinDevice blinkPin;
 glow::BlinkSettings blink(&blinkPin);
@@ -21,6 +22,7 @@ void run()
     testColorDetails();
     testColorHsvSteps();
     testHSVFunctions();
+    testColorPalettes();
     UNITY_END();
 }
 

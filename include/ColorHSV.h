@@ -58,10 +58,10 @@ namespace color
         }
 
         // member access
-        inline uint16_t Hue() { return hsv.hue; }
-        inline uint8_t Saturation() { return hsv.saturation; }
-        inline uint8_t Value() { return hsv.value; }
-        color_hsv_pack Pack() { return pack; }
+        inline uint16_t Hue() const { return hsv.hue; }
+        inline uint8_t Saturation() const { return hsv.saturation; }
+        inline uint8_t Value() const { return hsv.value; }
+        color_hsv_pack Pack() const { return pack; }
 
         // member setters
         inline void Hue(uint16_t v) { hsv.hue = v; }

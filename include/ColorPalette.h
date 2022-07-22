@@ -14,7 +14,9 @@ namespace color
 
     public:
         ColorPalette(const color_pack *palette,
-                     uint16_t length) : Palette(length) {}
+                     uint16_t length)
+            : Palette(length),
+              palette(palette) {}
 
         // implement
         inline color_pack Map(uint16_t index)
