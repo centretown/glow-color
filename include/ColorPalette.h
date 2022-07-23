@@ -14,8 +14,8 @@ namespace color
 
     public:
         ColorPalette(const color_pack *palette,
-                     uint16_t length)
-            : Palette(length),
+                     uint16_t length, bool gamma = true)
+            : Palette(length, gamma),
               palette(palette) {}
 
         // implement
@@ -26,7 +26,13 @@ namespace color
             {
                 return 0;
             }
-            return palette[Begin() + index % length];
+
+            color_pack c = palette[Begin() + index % length];
+            if (gamma)
+            {
+                c = Gamma(c);
+            }
+            return c;
         }
     };
 } // namespace color

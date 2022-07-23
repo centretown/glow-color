@@ -5,6 +5,7 @@
 #include "Color.h"
 #include "Range.h"
 #include "Math.h"
+#include "gamma.h"
 
 using glow::Range;
 
@@ -13,18 +14,20 @@ namespace color
     template <typename COLORTYPE, typename COLORPACK>
     class Palette : public Range
     {
-    private:
-        bool gamma = false;
-
     public:
-        Palette(uint16_t length)
+        bool gamma;
+
+        Palette(uint16_t length, bool gamma = true)
             : Range(0, length), gamma(gamma) {}
 
-        // access
-        inline bool Gamma() { return gamma; }
-
-        // modify
-        inline void Gamma(bool v) { gamma = v; }
-
+        // implement
+        inline color_pack Gamma(color_pack c)
+        {
+            Color g(c);
+            g(gamma8(g.Red()),
+              gamma8(g.Green()),
+              gamma8(g.Blue()));
+            return g.Pack();
+        }
     };
 } // namespace color
