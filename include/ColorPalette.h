@@ -14,7 +14,7 @@ namespace color
 
     public:
         ColorPalette(const color_pack *palette,
-                     uint16_t length, bool gamma = true)
+                     uint16_t length, bool gamma = false)
             : Palette(length, gamma),
               palette(palette) {}
 
