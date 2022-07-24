@@ -8,26 +8,35 @@
 #include "gamma.h"
 
 using glow::Range;
+using glow::range_pack;
 
 namespace color
 {
-    template <typename COLORTYPE, typename COLORPACK>
     class Palette : public Range
     {
+    private:
+        static uint16_t const minimum_size = 1;
+
+    protected:
+        uint16_t size = minimum_size;
+
     public:
-        bool gamma;
-
-        Palette(uint16_t length, bool gamma = true)
-            : Range(0, length), gamma(gamma) {}
-
-        // implement
-        inline color_pack Gamma(color_pack c)
+        Palette(uint16_t v)
         {
-            Color g(c);
-            g(gamma8(g.Red()),
-              gamma8(g.Green()),
-              gamma8(g.Blue()));
-            return g.Pack();
+            size = (v < minimum_size) ? minimum_size : v;
+            Resize(0, size);
         }
+
+        // use Span to safely resize range
+        range_pack Span(uint16_t begin, uint16_t end)
+        {
+            Resize(begin, end);
+            return Span();
+        }
+
+        // use Span to constrain Range resizes
+        range_pack Span();
+
+        inline bool IsMininmum() { return (Begin() == 0 && End() == 1); }
     };
 } // namespace color

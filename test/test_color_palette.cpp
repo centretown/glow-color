@@ -31,9 +31,10 @@ void testColorPalette()
         c4.Pack(),
     };
 
-    uint16_t length = sizeof(palette) / sizeof(palette[0]);
-    ColorPalette colorPalette(palette, length, false);
+    uint16_t size = sizeof(palette) / sizeof(palette[0]);
+    ColorPalette colorPalette(palette, size);
 
+    TEST_ASSERT_EQUAL_HEX(5, size);
     TEST_ASSERT_EQUAL_HEX(5, colorPalette.Length());
     TEST_ASSERT_EQUAL_HEX(c0.Pack(), colorPalette.Map(0));
     TEST_ASSERT_EQUAL_HEX(c1.Pack(), colorPalette.Map(1));

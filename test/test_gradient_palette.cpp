@@ -1,48 +1,80 @@
-// // Copyright (c) 2022 Dave Marsh. See LICENSE.
+// Copyright (c) 2022 Dave Marsh. See LICENSE.
 
-// #define UNITY_INCLUDE_PRINT_FORMATTED
+#define UNITY_INCLUDE_PRINT_FORMATTED
 
-// #include <unity.h>
+#include <unity.h>
 
-// #include "HueGradient.h"
+#include "HueGradient.h"
+#include "HSV.h"
+#include "ColorHSV.h"
 // #include "SaturationGradient.h"
 // #include "ValueGradient.h"
 
-// using color::HueGradient;
+using color::Color;
+using color::color_hsv_pack;
+using color::ColorHSV;
+using color::HueGradient;
+using color::ToRGB;
 // using color::SaturationGradient;
 
-// void testGradientPaletteContructors()
-// {
-//     HueGradient hueGradient;
-//     TEST_ASSERT_EQUAL(hue_limit, hueGradient.Span());
-//     TEST_ASSERT_EQUAL(false, hueGradient.Gamma());
-//     TEST_ASSERT_EQUAL(0, hueGradient.HSV().Pack());
+void testHueGradient()
+{
+    ColorHSV colorHSV(0, 15, 15);
+    HueGradient hueGradient(colorHSV.Pack());
+    TEST_ASSERT_EQUAL(0xffff, hueGradient.Length());
+    hueGradient.Span(0, 128);
+    TEST_ASSERT_EQUAL(128, hueGradient.Length());
 
-//     ColorHSV colorHSV(23, 127, 127);
-//     SaturationGradient satGradient(colorHSV, true, 25);
-//     TEST_ASSERT_EQUAL(25, satGradient.Span());
-//     TEST_ASSERT_EQUAL(true, satGradient.Gamma());
-//     TEST_ASSERT_EQUAL(colorHSV.Pack(), satGradient.HSV().Pack());
-//     TEST_ASSERT_EQUAL(colorHSV.Hue(), satGradient.HSV().Hue());
-//     TEST_ASSERT_EQUAL(colorHSV.Saturation(), satGradient.HSV().Saturation());
-//     TEST_ASSERT_EQUAL(colorHSV.Value(), satGradient.HSV().Value());
+    Color color(hueGradient.Map(0));
+    Color expected(ToRGB(colorHSV.Pack()));
+    TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
+    TEST_ASSERT_EQUAL(expected.Red(), color.Red());
+    TEST_ASSERT_EQUAL(expected.Green(), color.Green());
+    TEST_ASSERT_EQUAL(expected.Blue(), color.Blue());
 
-//     colorHSV.HSV(0x8000, 0xc0, 0x12);
-//     ValueGradient valGradient(colorHSV.Pack(), false, 0x80);
-//     TEST_ASSERT_EQUAL_HEX8(0x80, valGradient.Span());
-//     TEST_ASSERT_EQUAL(false, valGradient.Gamma());
-//     TEST_ASSERT_EQUAL_HEX32(colorHSV.Pack(), valGradient.HSV().Pack());
-//     TEST_ASSERT_EQUAL_HEX16(colorHSV.Hue(), valGradient.HSV().Hue());
-//     TEST_ASSERT_EQUAL_HEX8(colorHSV.Saturation(), valGradient.HSV().Saturation());
-//     TEST_ASSERT_EQUAL_HEX8(colorHSV.Value(), valGradient.HSV().Value());
-// }
+    colorHSV.Hue(1);
+    color(hueGradient.Map(1));
+    expected(ToRGB(colorHSV.Pack()));
+    TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
 
-// void testGradientPalette()
-// {
-// }
+    colorHSV.Hue(127);
+    color(hueGradient.Map(127));
+    expected(ToRGB(colorHSV.Pack()));
+    TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
 
-// void testGradientPalettes()
-// {
-//     RUN_TEST(testGradientPaletteContructors);
-//     RUN_TEST(testGradientPalette);
-// }
+    colorHSV.Hue(0);
+    color(hueGradient.Map(128));
+    expected(ToRGB(colorHSV.Pack()));
+    TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
+
+    hueGradient.Span(0, 129);
+    colorHSV.Hue(128);
+    color(hueGradient.Map(128));
+    expected(ToRGB(colorHSV.Pack()));
+    TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
+
+    hueGradient(128, 256);
+    TEST_ASSERT_EQUAL(128, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(256, hueGradient.End());
+    hueGradient.Span();
+    TEST_ASSERT_EQUAL(128, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(256, hueGradient.End());
+
+    ++hueGradient;
+    TEST_ASSERT_EQUAL(128, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(257, hueGradient.End());
+
+    hueGradient -= 128;
+    TEST_ASSERT_EQUAL(128, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(129, hueGradient.End());
+    TEST_ASSERT_EQUAL(1, hueGradient.Length());
+    hueGradient.Span();
+    TEST_ASSERT_EQUAL(128, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(129, hueGradient.End());
+    TEST_ASSERT_EQUAL(1, hueGradient.Length());
+}
+
+void testGradientPalettes()
+{
+    RUN_TEST(testHueGradient);
+}
