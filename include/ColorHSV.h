@@ -22,7 +22,7 @@ namespace color
     const uint16_t blue_to_magenta = 1275;
     const uint16_t blue_to_red = 1530;
 
-    const uint16_t hue_limit = 0xffff;
+    const uint16_t hue_limit = 1530;
     const uint8_t saturation_limit = 0xff;
     const uint8_t value_limit = 0xff;
 

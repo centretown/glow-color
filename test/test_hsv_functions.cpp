@@ -19,8 +19,9 @@ using color::color_hsv_pack;
 using color::color_pack;
 using color::color_rgbw;
 using color::ColorHSV;
+using color::hue_limit;
 
-const uint16_t HSV_TEST_LIMIT = 32000;
+const uint16_t HSV_TEST_LIMIT = hue_limit;
 uint64_t accum = 0;
 
 struct PutOriginal

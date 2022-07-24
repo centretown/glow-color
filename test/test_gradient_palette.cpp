@@ -13,6 +13,7 @@
 using color::Color;
 using color::color_hsv_pack;
 using color::ColorHSV;
+using color::hue_limit;
 using color::HueGradient;
 using color::ToRGB;
 // using color::SaturationGradient;
@@ -21,8 +22,10 @@ void testHueGradient()
 {
     ColorHSV colorHSV(0, 15, 15);
     HueGradient hueGradient(colorHSV.Pack());
-    TEST_ASSERT_EQUAL(0xffff, hueGradient.Length());
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Length());
     hueGradient.Span(0, 128);
+    // hueGradient(0, 128);
     TEST_ASSERT_EQUAL(128, hueGradient.Length());
 
     Color color(hueGradient.Map(0));
@@ -47,7 +50,7 @@ void testHueGradient()
     expected(ToRGB(colorHSV.Pack()));
     TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
 
-    hueGradient.Span(0, 129);
+    hueGradient(0, 129);
     colorHSV.Hue(128);
     color(hueGradient.Map(128));
     expected(ToRGB(colorHSV.Pack()));
@@ -72,6 +75,46 @@ void testHueGradient()
     TEST_ASSERT_EQUAL(128, hueGradient.Begin());
     TEST_ASSERT_EQUAL(129, hueGradient.End());
     TEST_ASSERT_EQUAL(1, hueGradient.Length());
+
+    hueGradient(0, hue_limit + 2);
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
+    TEST_ASSERT_EQUAL(0, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(hue_limit + 2, hueGradient.End());
+    TEST_ASSERT_EQUAL(hue_limit + 2, hueGradient.Length());
+    hueGradient.Span();
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
+    TEST_ASSERT_EQUAL(0, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.End());
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Length());
+
+    hueGradient(512, hue_limit + 2);
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
+    TEST_ASSERT_EQUAL(512, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(hue_limit + 2, hueGradient.End());
+    TEST_ASSERT_EQUAL(hue_limit + 2 - hueGradient.Begin(), hueGradient.Length());
+    hueGradient.Span();
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
+    TEST_ASSERT_EQUAL(510, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.End());
+    TEST_ASSERT_EQUAL(hue_limit - hueGradient.Begin(), hueGradient.Length());
+
+    hueGradient(15, hue_limit - 15);
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
+    TEST_ASSERT_EQUAL(15, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(hue_limit - 15, hueGradient.End());
+    TEST_ASSERT_EQUAL(hue_limit - 30, hueGradient.Length());
+    hueGradient.Span();
+    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
+    TEST_ASSERT_EQUAL(15, hueGradient.Begin());
+    TEST_ASSERT_EQUAL(hue_limit - 15, hueGradient.End());
+    TEST_ASSERT_EQUAL(hue_limit - 30, hueGradient.Length());
+    TEST_ASSERT_EQUAL(1500, hueGradient.Length());
+
+    Range range(0, 30);
+    uint16_t increment = hueGradient.Fit(range.Pack());
+    TEST_ASSERT_EQUAL(hueGradient.Length() / range.Length(), increment);
+    increment = hueGradient.Refit();
+    TEST_ASSERT_EQUAL(1, increment);
 }
 
 void testGradientPalettes()

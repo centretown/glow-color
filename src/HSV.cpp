@@ -7,25 +7,12 @@ namespace color
     color_pack ToRGB(color_hsv_pack HSV)
     {
         ColorHSV colorHSV(HSV);
-        uint16_t mappedHue = mapHue(colorHSV.Hue());
-        color_pack pack = mapHueToColor(mappedHue);
+        color_pack pack = mapHueToColor(colorHSV.Hue());
         pack = applySaturationValue(pack, colorHSV);
         return pack;
     }
 
-    inline uint16_t mapHue(uint16_t hue)
-    {
-        const uint32_t actual_ticks = 1530;
-        const uint32_t half_limit = 32768; // 0x8000
-        const uint32_t limit = 65536;      // 0x10000
-        uint32_t mapped_hue = hue;
-        mapped_hue *= actual_ticks;
-        mapped_hue += half_limit;
-        mapped_hue /= limit;
-        return static_cast<uint16_t>(mapped_hue);
-    }
-
-    color_pack mapHueToColor(uint16_t mapped_hue)
+    inline color_pack mapHueToColor(uint16_t mapped_hue)
     {
         if (mapped_hue < red_to_green)
         {
@@ -95,7 +82,7 @@ namespace color
         return color.Pack();
     }
 
-    color_pack applySaturationValue(color_pack pack, ColorHSV& hsv)
+    inline color_pack applySaturationValue(color_pack pack, ColorHSV &hsv)
     {
         uint16_t saturation_multiplier = 1 + hsv.Saturation(); // s1 1 to 256; same reason
         uint16_t value_multiplier = 1 + hsv.Value();           // v1 1 to 256; allows >>8 instead of /255

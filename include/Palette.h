@@ -27,6 +27,8 @@ namespace color
             Resize(0, size);
         }
 
+        const uint16_t Size() const { return size; }
+
         // use Span to safely resize range
         range_pack Span(uint16_t begin, uint16_t end)
         {

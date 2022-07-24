@@ -7,7 +7,7 @@
 
 namespace color
 {
-  class HueGradient : public GradientPalette<0xffff>
+  class HueGradient : public GradientPalette<hue_limit>
   {
   public:
     HueGradient(color_hsv_pack hue = 0)
@@ -16,7 +16,7 @@ namespace color
     // implement
     inline color_pack Map(uint16_t index)
     {
-      hue.Hue(Begin() + index % Length());
+      hue.Hue(Begin() + (increment * index) % Length());
       return ToRGB(hue.Pack());
     }
   };

@@ -1,5 +1,7 @@
 // Copyright (c) 2022 Dave Marsh. See LICENSE.
 
+// #define UNITY_INCLUDE_PRINT_FORMATTED
+// #include <unity.h>
 #include "Palette.h"
 
 namespace color
@@ -10,13 +12,15 @@ namespace color
         {
             Range range(Pack());
             uint16_t diff = End() - size;
+            // TEST_ASSERT_EQUAL(2, diff);
             if (diff > Begin())
             {
                 uint16_t rem = diff - Begin();
+                // TEST_ASSERT_EQUAL(2, rem);
                 // shift Begin to zero
-                range <<= rem;
+                range <<= diff - rem;
                 // chop off the remainder
-                range -= diff - rem;
+                range -= rem;
             }
             else
             {
