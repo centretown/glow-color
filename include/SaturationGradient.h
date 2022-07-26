@@ -1,24 +1,23 @@
-// // Copyright (c) 2022 Dave Marsh. See LICENSE.
+// Copyright (c) 2022 Dave Marsh. See LICENSE.
 
-// #pragma once
+#pragma once
 
-// #include "Gradient.h"
+#include "GradientPalette.h"
+#include "HSV.h"
 
-// namespace pixel
-// {
-//     class SaturationGradient : public Gradient<uint8_t>
-//     {
-//     public:
-//         SaturationGradient(color_hsv_pack pack = 0,
-//                            bool gamma = false,
-//                            uint8_t span = (uint8_t)-1)
-//             : Gradient(pack, gamma, span) {}
+namespace color
+{
+    class SaturationGradient : public GradientPalette<saturation_limit>
+    {
+    public:
+        SaturationGradient(color_hsv_pack hue = 0)
+            : GradientPalette(hue) {}
 
-//         SaturationGradient(ColorHSV &colorHSV,
-//                            bool gamma = false,
-//                            uint8_t span = (uint8_t)-1)
-//             : Gradient(colorHSV, gamma, span) {}
-            
-//         virtual color_pack Get(uint16_t index) { return 0; }
-//     };
-// } // namespace pixel
+        // implement
+        inline color_pack Map(uint16_t index)
+        {
+            hue.Saturation(Begin() + (increment * index) % Length());
+            return ToRGB(hue.Pack());
+        }
+    };
+} // namespace color

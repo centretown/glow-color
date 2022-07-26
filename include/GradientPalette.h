@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "ColorHSV.h"
+#include "Wheel.h"
 #include "Color.h"
 #include "Palette.h"
 
@@ -12,7 +12,7 @@ namespace color
     class GradientPalette : public Palette
     {
     protected:
-        ColorHSV hue;
+        Wheel hue;
         uint16_t increment = 1;
 
     public:

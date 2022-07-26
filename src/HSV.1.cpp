@@ -6,7 +6,7 @@ namespace color
 {
     color_pack ToRGB_1(color_hsv_pack HSV)
     {
-        ColorHSV colorHSV(HSV);
+        Wheel colorHSV(HSV);
         uint16_t mappedHue = mapHue_1(colorHSV.Hue());
         color_pack pack = mapHueToColor_1(mappedHue);
         pack = applySaturationValue_1(pack, colorHSV);
@@ -95,7 +95,7 @@ namespace color
         return color.Pack();
     }
 
-    color_pack applySaturationValue_1(color_pack pack, ColorHSV& hsv)
+    color_pack applySaturationValue_1(color_pack pack, Wheel& hsv)
     {
         uint16_t saturation_multiplier = 1 + hsv.Saturation(); // s1 1 to 256; same reason
         uint16_t value_multiplier = 1 + hsv.Value();           // v1 1 to 256; allows >>8 instead of /255

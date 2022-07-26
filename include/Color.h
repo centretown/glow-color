@@ -239,5 +239,8 @@ namespace color
             Pack(XOR(mask));
             return *this;
         }
+
+        // Hue, Saturation, Value transformations
+        
     };
 } // namespace color

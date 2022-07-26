@@ -26,7 +26,7 @@ namespace color
     const uint8_t saturation_limit = 0xff;
     const uint8_t value_limit = 0xff;
 
-    class ColorHSV
+    class Wheel
     {
     private:
         union
@@ -36,26 +36,14 @@ namespace color
         };
 
     public:
-        ColorHSV(color_hsv_pack pack = 0) : pack(pack) {}
+        Wheel(color_hsv_pack pack = 0) : pack(pack) {}
 
-        ColorHSV(uint16_t hue,
+        Wheel(uint16_t hue,
                  uint8_t saturation,
                  uint8_t value)
         {
             HSV(hue, saturation, value);
         }
-
-        ColorHSV(ColorHSV &colorHSV)
-        {
-            HSV(colorHSV.Hue(),
-                colorHSV.Saturation(),
-                colorHSV.Value());
-        }
-
-        // ColorHSV(Color &color)
-        // {
-        //     // fromRGB(color.Pack());
-        // }
 
         // member access
         inline uint16_t Hue() const { return hsv.hue; }
@@ -69,41 +57,13 @@ namespace color
         inline void Value(uint8_t v) { hsv.value = v; }
 
         // modify all
-        inline void HSV(uint16_t h, uint8_t s, uint8_t v)
+        inline void HSV(uint16_t hue, uint8_t saturation, uint8_t value)
         {
-            hsv.hue = h;
-            hsv.saturation = s;
-            hsv.value = v;
+            hsv.hue = hue;
+            hsv.saturation = saturation;
+            hsv.value = value;
         }
         void Pack(color_hsv_pack v) { pack = v; }
-        void Copy(ColorHSV &v) { pack = v.Pack(); }
-
-        inline uint8_t biggest(Color &color)
-        {
-            uint8_t colorMax = color.Red();
-            if (color.Green() > colorMax)
-            {
-                colorMax = color.Green();
-            }
-            if (color.Blue() > colorMax)
-            {
-                colorMax = color.Blue();
-            }
-            return colorMax;
-        }
-        inline uint8_t smallest(Color &color)
-        {
-            uint8_t colorMin = color.Red();
-            if (color.Green() < colorMin)
-            {
-                colorMin = color.Green();
-            }
-            if (color.Blue() < colorMin)
-            {
-                colorMin = color.Blue();
-            }
-            return colorMin;
-        }
     };
 
 } // namespace pixel

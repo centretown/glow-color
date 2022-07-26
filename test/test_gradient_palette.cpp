@@ -4,120 +4,156 @@
 
 #include <unity.h>
 
-#include "HueGradient.h"
 #include "HSV.h"
-#include "ColorHSV.h"
-// #include "SaturationGradient.h"
-// #include "ValueGradient.h"
+#include "Wheel.h"
+#include "HueGradient.h"
+#include "SaturationGradient.h"
+#include "ValueGradient.h"
 
 using color::Color;
 using color::color_hsv_pack;
-using color::ColorHSV;
+using color::Wheel;
 using color::hue_limit;
 using color::HueGradient;
+using color::saturation_limit;
+using color::SaturationGradient;
 using color::ToRGB;
-// using color::SaturationGradient;
+using color::value_limit;
+using color::ValueGradient;
 
-void testHueGradient()
+template <typename GRADIENT, typename PUTTTER>
+void testGradient(Wheel &colorHSV, PUTTTER &PUT, uint16_t LIMIT)
 {
-    ColorHSV colorHSV(0, 15, 15);
-    HueGradient hueGradient(colorHSV.Pack());
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Length());
-    hueGradient.Span(0, 128);
-    // hueGradient(0, 128);
-    TEST_ASSERT_EQUAL(128, hueGradient.Length());
+    GRADIENT gradient(colorHSV.Pack());
+    TEST_ASSERT_EQUAL(LIMIT, gradient.Size());
+    TEST_ASSERT_EQUAL(LIMIT, gradient.Length());
+    gradient.Span(0, 128);
+    TEST_ASSERT_EQUAL(128, gradient.Length());
 
-    Color color(hueGradient.Map(0));
+    Color color(gradient.Map(0));
     Color expected(ToRGB(colorHSV.Pack()));
     TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
     TEST_ASSERT_EQUAL(expected.Red(), color.Red());
     TEST_ASSERT_EQUAL(expected.Green(), color.Green());
     TEST_ASSERT_EQUAL(expected.Blue(), color.Blue());
 
-    colorHSV.Hue(1);
-    color(hueGradient.Map(1));
+    // colorHSV.Hue(1);
+    PUT(1);
+    color(gradient.Map(1));
     expected(ToRGB(colorHSV.Pack()));
     TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
 
-    colorHSV.Hue(127);
-    color(hueGradient.Map(127));
+    // colorHSV.Hue(127);
+    PUT(127);
+    color(gradient.Map(127));
     expected(ToRGB(colorHSV.Pack()));
     TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
 
-    colorHSV.Hue(0);
-    color(hueGradient.Map(128));
+    // colorHSV.Hue(0);
+    PUT(0);
+    color(gradient.Map(128));
     expected(ToRGB(colorHSV.Pack()));
     TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
 
-    hueGradient(0, 129);
-    colorHSV.Hue(128);
-    color(hueGradient.Map(128));
+    gradient(0, 129);
+    // colorHSV.Hue(128);
+    PUT(128);
+    color(gradient.Map(128));
     expected(ToRGB(colorHSV.Pack()));
     TEST_ASSERT_EQUAL(expected.Pack(), color.Pack());
 
-    hueGradient(128, 256);
-    TEST_ASSERT_EQUAL(128, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(256, hueGradient.End());
-    hueGradient.Span();
-    TEST_ASSERT_EQUAL(128, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(256, hueGradient.End());
+    gradient(128, LIMIT);
+    TEST_ASSERT_EQUAL(128, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT, gradient.End());
+    gradient.Span();
+    TEST_ASSERT_EQUAL(128, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT, gradient.End());
 
-    ++hueGradient;
-    TEST_ASSERT_EQUAL(128, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(257, hueGradient.End());
+    ++gradient;
+    TEST_ASSERT_EQUAL(128, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT + 1, gradient.End());
+    gradient.Span();
+    TEST_ASSERT_EQUAL(127, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT, gradient.End());
 
-    hueGradient -= 128;
-    TEST_ASSERT_EQUAL(128, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(129, hueGradient.End());
-    TEST_ASSERT_EQUAL(1, hueGradient.Length());
-    hueGradient.Span();
-    TEST_ASSERT_EQUAL(128, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(129, hueGradient.End());
-    TEST_ASSERT_EQUAL(1, hueGradient.Length());
+    gradient -= 127;
+    TEST_ASSERT_EQUAL(127, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT - 127, gradient.End());
 
-    hueGradient(0, hue_limit + 2);
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
-    TEST_ASSERT_EQUAL(0, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(hue_limit + 2, hueGradient.End());
-    TEST_ASSERT_EQUAL(hue_limit + 2, hueGradient.Length());
-    hueGradient.Span();
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
-    TEST_ASSERT_EQUAL(0, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.End());
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Length());
+    gradient(0, LIMIT + 2);
+    TEST_ASSERT_EQUAL(LIMIT, gradient.Size());
+    TEST_ASSERT_EQUAL(0, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT + 2, gradient.End());
+    TEST_ASSERT_EQUAL(LIMIT + 2, gradient.Length());
+    gradient.Span();
+    TEST_ASSERT_EQUAL(LIMIT, gradient.Size());
+    TEST_ASSERT_EQUAL(0, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT, gradient.End());
+    TEST_ASSERT_EQUAL(LIMIT, gradient.Length());
 
-    hueGradient(512, hue_limit + 2);
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
-    TEST_ASSERT_EQUAL(512, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(hue_limit + 2, hueGradient.End());
-    TEST_ASSERT_EQUAL(hue_limit + 2 - hueGradient.Begin(), hueGradient.Length());
-    hueGradient.Span();
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
-    TEST_ASSERT_EQUAL(510, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.End());
-    TEST_ASSERT_EQUAL(hue_limit - hueGradient.Begin(), hueGradient.Length());
+    gradient(0, LIMIT + 2);
+    TEST_ASSERT_EQUAL(LIMIT, gradient.Size());
+    TEST_ASSERT_EQUAL(0, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT + 2, gradient.End());
+    TEST_ASSERT_EQUAL(LIMIT + 2, gradient.Length());
+    gradient.Span();
+    TEST_ASSERT_EQUAL(LIMIT, gradient.Size());
+    TEST_ASSERT_EQUAL(0, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT, gradient.End());
+    TEST_ASSERT_EQUAL(LIMIT, gradient.Length());
 
-    hueGradient(15, hue_limit - 15);
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
-    TEST_ASSERT_EQUAL(15, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(hue_limit - 15, hueGradient.End());
-    TEST_ASSERT_EQUAL(hue_limit - 30, hueGradient.Length());
-    hueGradient.Span();
-    TEST_ASSERT_EQUAL(hue_limit, hueGradient.Size());
-    TEST_ASSERT_EQUAL(15, hueGradient.Begin());
-    TEST_ASSERT_EQUAL(hue_limit - 15, hueGradient.End());
-    TEST_ASSERT_EQUAL(hue_limit - 30, hueGradient.Length());
-    TEST_ASSERT_EQUAL(1500, hueGradient.Length());
+    gradient(15, LIMIT - 15);
+    TEST_ASSERT_EQUAL(LIMIT, gradient.Size());
+    TEST_ASSERT_EQUAL(15, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT - 15, gradient.End());
+    TEST_ASSERT_EQUAL(LIMIT - 30, gradient.Length());
+    gradient.Span();
+    TEST_ASSERT_EQUAL(LIMIT, gradient.Size());
+    TEST_ASSERT_EQUAL(15, gradient.Begin());
+    TEST_ASSERT_EQUAL(LIMIT - 15, gradient.End());
+    TEST_ASSERT_EQUAL(LIMIT - 30, gradient.Length());
+    TEST_ASSERT_EQUAL(LIMIT - 30, gradient.Length());
 
     Range range(0, 30);
-    uint16_t increment = hueGradient.Fit(range.Pack());
-    TEST_ASSERT_EQUAL(hueGradient.Length() / range.Length(), increment);
-    increment = hueGradient.Refit();
+    uint16_t increment = gradient.Fit(range.Pack());
+    TEST_ASSERT_EQUAL(gradient.Length() / range.Length(), increment);
+    increment = gradient.Refit();
     TEST_ASSERT_EQUAL(1, increment);
+}
+
+void testHueGradient()
+{
+    Wheel colorHSV(0);
+    auto put = [&](uint16_t v)
+    {
+        colorHSV.Hue(v);
+    };
+    testGradient<HueGradient>(colorHSV, put, hue_limit);
+}
+
+void testSaturationGradient()
+{
+    Wheel colorHSV(0);
+    auto put = [&](uint16_t v)
+    {
+        colorHSV.Saturation(v);
+    };
+    testGradient<SaturationGradient>(colorHSV, put, saturation_limit);
+}
+
+void testValueGradient()
+{
+    Wheel colorHSV(0);
+    auto put = [&](uint16_t v)
+    {
+        colorHSV.Value(v);
+    };
+    testGradient<ValueGradient>(colorHSV, put, value_limit);
 }
 
 void testGradientPalettes()
 {
     RUN_TEST(testHueGradient);
+    RUN_TEST(testSaturationGradient);
+    RUN_TEST(testValueGradient);
 }

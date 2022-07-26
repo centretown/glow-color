@@ -2,7 +2,7 @@
 
 #pragma once
 #include "Color.h"
-#include "ColorHSV.h"
+#include "Wheel.h"
 
 namespace color
 {
@@ -12,7 +12,7 @@ namespace color
     inline color_pack redToGreen_1(uint16_t mapped_hue);
     inline color_pack greenToBlue_1(uint16_t mapped_hue);
     inline color_pack blueToRed_1(uint16_t mapped_hue);
-    color_pack applySaturationValue_1(color_pack pack, ColorHSV& hsv);
+    color_pack applySaturationValue_1(color_pack pack, Wheel& hsv);
     inline uint8_t apply_1(uint8_t color,
                          uint16_t saturation_multiplier,
                          uint16_t value_multiplier,
