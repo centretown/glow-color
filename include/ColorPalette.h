@@ -20,6 +20,12 @@ namespace color
         // implement
         inline color_pack Map(uint16_t index)
         {
+            if (gamma)
+            {
+                Color color(palette[Begin() + index % Length()]);
+                color = color.Gamma();
+                return color.Pack();
+            }
             return palette[Begin() + index % Length()];
         }
     };

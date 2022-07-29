@@ -3,6 +3,8 @@
 #pragma once
 
 #include "base.h"
+#include "gamma.h"
+#include "sine.h"
 
 namespace color
 {
@@ -253,6 +255,26 @@ namespace color
         {
             Pack(XOR(mask));
             return *this;
+        }
+
+        inline color_pack Gamma()
+        {
+            Color color;
+            color(gamma8(color.rgbw.red),
+                  gamma8(color.rgbw.green),
+                  gamma8(color.rgbw.blue),
+                  gamma8(color.rgbw.white));
+            return color.Pack();
+        }
+
+        inline color_pack Sine()
+        {
+            Color color;
+            color(sine8(color.rgbw.red),
+                  sine8(color.rgbw.green),
+                  sine8(color.rgbw.blue),
+                  sine8(color.rgbw.white));
+            return color.Pack();
         }
 
     public:

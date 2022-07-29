@@ -16,6 +16,8 @@ namespace color
     {
     protected:
         uint16_t size = 1;
+        bool gamma = false;
+        bool sine = false;
 
     public:
         Palette(uint16_t v = 1)
@@ -23,6 +25,11 @@ namespace color
             size = (v < 1) ? 1 : v;
             Resize(0, size);
         }
+
+        bool Gamma() { return gamma; }
+        bool Gamma(bool v) { return gamma = v; }
+        bool Sine() { return sine; }
+        bool Sine(bool v) { return sine = v; }
 
         uint16_t Size() { return size; }
 
@@ -46,4 +53,5 @@ namespace color
             return size;
         }
     };
+
 } // namespace color

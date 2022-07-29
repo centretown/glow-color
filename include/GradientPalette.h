@@ -39,6 +39,8 @@ namespace color
 
         Color color;
 
+        bool gamma = false;
+
     public:
         GradientPalette(GradientTransition v = VARY_HUE,
                         uint16_t hue = 0,
@@ -53,6 +55,9 @@ namespace color
             saturationGradient.Size(saturation_size);
             luminanceGradient.Size(luminance_size);
         }
+
+        bool Gamma() { return gamma; }
+        bool Gamma(bool v) { return gamma = v; }
 
         // modify
         inline Gradient &Hue() { return hueGradient; }
@@ -75,6 +80,13 @@ namespace color
                 luminance = luminanceGradient.Map(index);
             }
             color.Wheel(hue, saturation, luminance);
+
+            if (gamma)
+            {
+                color = color.Gamma();
+                return color.Pack();
+            }
+
             return color.Pack();
         }
 
