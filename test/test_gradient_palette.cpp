@@ -11,9 +11,6 @@
 
 using glow::print_line;
 
-using color::CHANGE_HUE;
-using color::CHANGE_LUMINANCE;
-using color::CHANGE_SATURATION;
 using color::Color;
 using color::color_pack;
 using color::Gradient;
@@ -22,6 +19,9 @@ using color::hue_limit;
 using color::hue_size;
 using color::luminance_size;
 using color::saturation_size;
+using color::VARY_HUE;
+using color::VARY_LUMINANCE;
+using color::VARY_SATURATION;
 
 using color::hue_blue;
 using color::hue_cyan;
@@ -71,7 +71,7 @@ struct Putter
 
 void testHueGradient()
 {
-    GradientPalette palette(CHANGE_HUE);
+    GradientPalette palette(VARY_HUE);
     Gradient &hue = palette.Hue();
     Gradient &saturation = palette.Saturation();
     Gradient &luminance = palette.Luminance();
@@ -84,14 +84,14 @@ void testHueGradient()
     TEST_ASSERT_EQUAL(saturation_size, saturation.Length());
     TEST_ASSERT_EQUAL(luminance_size, luminance.Length());
 
-    TEST_ASSERT_EQUAL(CHANGE_HUE, palette.Change());
+    TEST_ASSERT_EQUAL(VARY_HUE, palette.Vary());
 
     const uint16_t test_end = 40;
     Range range(0, test_end);
     TEST_ASSERT_EQUAL(test_end, range.Length());
-    hue.Fit(range);
+    palette.Fit(range);
     TEST_ASSERT_EQUAL(hue.Length() / range.Length(), hue.Increment());
-    hue.Refit();
+    palette.Refit();
     TEST_ASSERT_EQUAL(1, hue.Increment());
 
     Color color;
@@ -99,21 +99,21 @@ void testHueGradient()
     range(0, 40);
 
     hue(hue_red, hue_yellow);
-    hue.Fit(range);
+    palette.Fit(range);
     TEST_ASSERT_EQUAL(hue.Length() / range.Length(), hue.Increment());
     color.Wheel(hue_red, 255, 255);
     putter(color.Pack(), "red to yellow");
     range.SpinValues(putter, palette);
 
     hue(hue_magenta, hue_limit + hue_yellow);
-    hue.Fit(range);
+    palette.Fit(range);
     TEST_ASSERT_EQUAL(hue.Length() / range.Length(), hue.Increment());
     color.Wheel(hue_magenta, 255, 255);
     putter(color.Pack(), "magenta to yellow");
     range.SpinValues(putter, palette);
 
     hue(hue_cyan, hue_blue);
-    hue.Fit(range);
+    palette.Fit(range);
     TEST_ASSERT_EQUAL(hue.Length() / range.Length(), hue.Increment());
     color.Wheel(hue_cyan, 255, 255);
     putter(color.Pack(), "cyan to blue");
@@ -121,12 +121,12 @@ void testHueGradient()
 
     color.Wheel(hue_blue, 255, 255);
     putter(color.Pack(), "blue to cyan");
-    range.SpinValues(putter, palette, true);
+    range.SpinValues(putter, palette, true); // reverse
 }
 
 void testSaturationGradient()
 {
-    GradientPalette palette(CHANGE_SATURATION);
+    GradientPalette palette(VARY_SATURATION);
     Gradient &hue = palette.Hue();
     Gradient &saturation = palette.Saturation();
     Gradient &luminance = palette.Luminance();
@@ -139,12 +139,31 @@ void testSaturationGradient()
     TEST_ASSERT_EQUAL(saturation_size, saturation.Length());
     TEST_ASSERT_EQUAL(luminance_size, luminance.Length());
 
-    TEST_ASSERT_EQUAL(CHANGE_SATURATION, palette.Change());
+    TEST_ASSERT_EQUAL(VARY_SATURATION, palette.Vary());
+
+    Color color;
+    Putter putter;
+    const uint16_t test_end = 40;
+    Range range(0, test_end);
+
+    saturation(127, 255);
+    palette.Fit(range);
+    TEST_ASSERT_EQUAL(saturation.Length() / range.Length(), saturation.Increment());
+    color.Wheel(hue_red, 255, 255);
+    putter(color.Pack(), "127 to 255");
+    range.SpinValues(putter, palette);
+
+    saturation(0, 127);
+    palette.Fit(range);
+    TEST_ASSERT_EQUAL(saturation.Length() / range.Length(), saturation.Increment());
+    color.Wheel(hue_red, 255, 255);
+    putter(color.Pack(), "0 to 127");
+    range.SpinValues(putter, palette);
 }
 
 void testLuminanceGradient()
 {
-    GradientPalette palette(CHANGE_LUMINANCE);
+    GradientPalette palette(VARY_LUMINANCE);
     Gradient &hue = palette.Hue();
     Gradient &saturation = palette.Saturation();
     Gradient &luminance = palette.Luminance();
@@ -157,7 +176,26 @@ void testLuminanceGradient()
     TEST_ASSERT_EQUAL(saturation_size, saturation.Length());
     TEST_ASSERT_EQUAL(luminance_size, luminance.Length());
 
-    TEST_ASSERT_EQUAL(CHANGE_LUMINANCE, palette.Change());
+    TEST_ASSERT_EQUAL(VARY_LUMINANCE, palette.Vary());
+
+    Color color;
+    Putter putter;
+    const uint16_t test_end = 40;
+    Range range(0, test_end);
+
+    luminance(127, 255);
+    palette.Fit(range);
+    TEST_ASSERT_EQUAL(saturation.Length() / range.Length(), saturation.Increment());
+    color.Wheel(hue_red, 255, 127);
+    putter(color.Pack(), "127 to 255");
+    range.SpinValues(putter, palette);
+
+    luminance(0, 127);
+    palette.Fit(range);
+    TEST_ASSERT_EQUAL(saturation.Length() / range.Length(), saturation.Increment());
+    color.Wheel(hue_red, 127, 0);
+    putter(color.Pack(), "0 to 127");
+    range.SpinValues(putter, palette);
 }
 
 void testGradientPalettes()

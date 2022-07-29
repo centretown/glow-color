@@ -9,19 +9,19 @@ namespace color
 {
     typedef enum : uint8_t
     {
-        CHANGE_NONE = 0,
-        CHANGE_HUE = 1,
-        CHANGE_SATURATION = 2,
-        CHANGE_LUMINANCE = 4,
-        CHANGE_ALL = CHANGE_HUE |
-                     CHANGE_SATURATION |
-                     CHANGE_LUMINANCE,
-    } GradientChange;
+        VARY_NONE = 0,
+        VARY_HUE = 1,
+        VARY_SATURATION = 2,
+        VARY_LUMINANCE = 4,
+        VARY_ALL = VARY_HUE |
+                   VARY_SATURATION |
+                   VARY_LUMINANCE,
+    } GradientTransition;
 
     class GradientPalette
     {
     private:
-        GradientChange change = CHANGE_NONE;
+        GradientTransition varied = VARY_HUE;
 
         Gradient hueGradient;
         Gradient saturationGradient;
@@ -34,11 +34,11 @@ namespace color
         Color color;
 
     public:
-        GradientPalette(GradientChange flag = CHANGE_HUE,
+        GradientPalette(GradientTransition v = VARY_HUE,
                         uint16_t hue = 0,
                         uint8_t saturation = 255,
                         uint8_t luminance = 255)
-            : change(flag),
+            : varied(v),
               hue(hue),
               saturation(saturation),
               luminance(luminance)
@@ -46,17 +46,6 @@ namespace color
             hueGradient.Size(hue_size);
             saturationGradient.Size(saturation_size);
             luminanceGradient.Size(luminance_size);
-        }
-
-        inline void Reset(GradientChange vFlag = CHANGE_HUE,
-                          uint16_t vHue = 0,
-                          uint8_t vSaturation = 0,
-                          uint8_t vLuminance = 0)
-        {
-            change = vFlag;
-            hue = vHue;
-            saturation = vSaturation;
-            luminance = vLuminance;
         }
 
         // modify
@@ -67,15 +56,15 @@ namespace color
         // implement
         inline color_pack Map(uint16_t index)
         {
-            if (CHANGE_HUE & change)
+            if (VARY_HUE & varied)
             {
                 hue = hueGradient.Map(index);
             }
-            if (CHANGE_SATURATION & change)
+            if (VARY_SATURATION & varied)
             {
                 saturation = saturationGradient.Map(index);
             }
-            if (CHANGE_LUMINANCE & change)
+            if (VARY_LUMINANCE & varied)
             {
                 luminance = luminanceGradient.Map(index);
             }
@@ -83,9 +72,8 @@ namespace color
             return color.Pack();
         }
 
-        inline void Fit(range_pack pack)
+        inline void Fit(Range &range)
         {
-            Range range(pack);
             hueGradient.Fit(range);
             saturationGradient.Fit(range);
             luminanceGradient.Fit(range);
@@ -98,6 +86,16 @@ namespace color
             luminanceGradient.Refit();
         }
 
-        const GradientChange Change() { return change; }
+        inline GradientTransition Vary() const { return varied; }
+        inline GradientTransition Vary(GradientTransition v) { return varied = v; }
+
+        void operator()(uint16_t vHue = 0,
+                        uint8_t vSaturation = 255,
+                        uint8_t vLuminance = 255)
+        {
+            hue = vHue;
+            saturation = vSaturation;
+            luminance = vLuminance;
+        }
     };
 } // namespace color
