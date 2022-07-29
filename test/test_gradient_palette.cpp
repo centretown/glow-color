@@ -90,9 +90,9 @@ void testHueGradient()
     Range range(0, test_end);
     TEST_ASSERT_EQUAL(test_end, range.Length());
     palette.Fit(range);
-    TEST_ASSERT_EQUAL(hue.Length() / range.Length() + 1, hue.Increment());
+    TEST_ASSERT_EQUAL(range.Length(), hue.FitLength());
     palette.Refit();
-    TEST_ASSERT_EQUAL(1, hue.Increment());
+    TEST_ASSERT_EQUAL(hue.Length(), hue.FitLength());
 
     Color color;
     Putter putter;
@@ -100,21 +100,18 @@ void testHueGradient()
 
     hue(hue_red, hue_yellow);
     palette.Fit(range);
-    TEST_ASSERT_EQUAL(hue.Length() / range.Length() + 1, hue.Increment());
     color.Wheel(hue_red, 255, 255);
     putter(color.Pack(), "red to yellow");
     range.SpinValues(putter, palette);
 
     hue(hue_magenta, hue_limit + hue_yellow);
     palette.Fit(range);
-    TEST_ASSERT_EQUAL(hue.Length() / range.Length() + 1, hue.Increment());
     color.Wheel(hue_magenta, 255, 255);
     putter(color.Pack(), "magenta to yellow");
     range.SpinValues(putter, palette);
 
     hue(hue_cyan, hue_blue);
     palette.Fit(range);
-    TEST_ASSERT_EQUAL(hue.Length() / range.Length() + 1, hue.Increment());
     color.Wheel(hue_cyan, 255, 255);
     putter(color.Pack(), "cyan to blue");
     range.SpinValues(putter, palette);
@@ -148,14 +145,12 @@ void testSaturationGradient()
 
     saturation(127, 255);
     palette.Fit(range);
-    TEST_ASSERT_EQUAL(saturation.Length() / range.Length() + 1, saturation.Increment());
     color.Wheel(hue_red, 255, 255);
     putter(color.Pack(), "127 to 255");
     range.SpinValues(putter, palette);
 
     saturation(0, 127);
     palette.Fit(range);
-    TEST_ASSERT_EQUAL(saturation.Length() / range.Length() + 1, saturation.Increment());
     color.Wheel(hue_red, 255, 255);
     putter(color.Pack(), "0 to 127");
     range.SpinValues(putter, palette);
@@ -185,14 +180,13 @@ void testLuminanceGradient()
 
     luminance(127, 255);
     palette.Fit(range);
-    TEST_ASSERT_EQUAL(saturation.Length() / range.Length() + 1, saturation.Increment());
     color.Wheel(hue_red, 255, 127);
     putter(color.Pack(), "127 to 255");
     range.SpinValues(putter, palette);
 
     luminance(0, 127);
     palette.Fit(range);
-    TEST_ASSERT_EQUAL(saturation.Length() / range.Length() + 1, saturation.Increment());
+    TEST_ASSERT_EQUAL(range.Length(), saturation.FitLength());
     color.Wheel(hue_red, 127, 0);
     putter(color.Pack(), "0 to 127");
     range.SpinValues(putter, palette);

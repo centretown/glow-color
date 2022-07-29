@@ -10,27 +10,30 @@ namespace color
     class Gradient : public Palette
     {
     private:
-        uint16_t increment = 1;
+        uint16_t fitLength = 1;
         friend GradientPalette;
 
     public:
-        Gradient(uint16_t size = 1) : Palette(size) {}
+        Gradient(uint16_t size = 1) : Palette(size)
+        {
+            fitLength = Length();
+        }
 
         inline uint16_t Fit(Range &range)
         {
-            return increment = Length() / range.Length() + 1;
+            return fitLength = range.Length();
         }
 
         inline uint16_t Refit()
         {
-            return increment = 1;
+            return fitLength = Length();
         }
 
         inline uint16_t Map(uint16_t index)
         {
-            return Begin() + (increment * index) % Length();
+            return ((Length() * index) / fitLength) + Begin();
         }
 
-        inline const uint16_t Increment() const { return increment; }
+        inline const uint16_t FitLength() const { return fitLength; }
     };
 } // namespace color
