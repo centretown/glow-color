@@ -13,6 +13,12 @@ namespace color
         VARY_HUE = 1,
         VARY_SATURATION = 2,
         VARY_LUMINANCE = 4,
+        VARY_HUE_SATURATION = VARY_HUE |
+                              VARY_SATURATION,
+        VARY_HUE_LUMINANCE = VARY_HUE |
+                             VARY_LUMINANCE,
+        VARY_SATURATION_LUMINANCE = VARY_SATURATION |
+                                    VARY_LUMINANCE,
         VARY_ALL = VARY_HUE |
                    VARY_SATURATION |
                    VARY_LUMINANCE,

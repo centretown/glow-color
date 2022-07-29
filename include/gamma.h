@@ -4,9 +4,13 @@
 #pragma once
 
 #include "base.h"
+#ifdef ADAFRUIT_NEOPIXEL
+#include "Adafruit_NeoPixel.h"
+#endif
 
 namespace color
 {
+#ifndef ADAFRUIT_NEOPIXEL
 #ifdef ARDUINO
     const uint8_t PROGMEM gamma_table[256] = {
 #else
@@ -35,4 +39,10 @@ namespace color
     {
         return gamma_table[c];
     }
+#else
+    inline uint8_t gamma8(uint8_t c)
+    {
+        return Adafruit_NeoPixel::gamma8(c);
+    }
+#endif
 }
