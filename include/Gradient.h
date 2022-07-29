@@ -31,7 +31,7 @@ namespace color
 
         inline uint16_t Map(uint16_t index)
         {
-            return ((Length() * index) / fitLength) + Begin();
+            return ((fitLength * index) / Length()) + Begin();
         }
 
         inline const uint16_t FitLength() const { return fitLength; }
