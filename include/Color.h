@@ -6,6 +6,21 @@
 
 namespace color
 {
+    const uint16_t hue_red = 0;
+    const uint16_t hue_yellow = 255;
+    const uint16_t hue_green = 510;
+    const uint16_t hue_cyan = 765;
+    const uint16_t hue_blue = 1020;
+    const uint16_t hue_magenta = 1275;
+    const uint16_t hue_limit = 1530;
+
+    // doubled to allow ranges like:
+    // blue-yellow 1020 - 1785
+    const uint16_t hue_size = hue_limit * 2;
+    const uint8_t saturation_size = 0xff;
+    const uint8_t luminance_size = 0xff;
+    const uint8_t rgb_limit = 0xff;
+
     typedef uint32_t color_pack;
 
     typedef enum : uint8_t
@@ -240,7 +255,9 @@ namespace color
             return *this;
         }
 
-        // Hue, Saturation, Value transformations
-        
+    public:
+        void Wheel(uint16_t hue,
+                   uint8_t saturation,
+                   uint8_t luminance);
     };
 } // namespace color

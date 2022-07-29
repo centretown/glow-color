@@ -32,8 +32,8 @@ void setup()
 {
 #ifdef ARDUINO
     Serial.begin(115200);
-#endif
     delay(2000);
+#endif
     glow::Benchmark::Setup();
     run();
     blinkPin.Setup();
