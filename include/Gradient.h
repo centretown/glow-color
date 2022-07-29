@@ -18,8 +18,7 @@ namespace color
 
         inline uint16_t Fit(Range &range)
         {
-            uint16_t i = Length() / range.Length();
-            return increment = (i < 1) ? 1 : i;
+            return increment = Length() / range.Length() + 1;
         }
 
         inline uint16_t Refit()

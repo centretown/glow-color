@@ -279,6 +279,6 @@ namespace color
         void Wheel(uint16_t hue,
                    uint8_t saturation,
                    uint8_t luminance,
-                   bool gamma = true);
+                   bool gamma = false);
     };
 } // namespace color
