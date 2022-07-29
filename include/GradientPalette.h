@@ -79,13 +79,7 @@ namespace color
             {
                 luminance = luminanceGradient.Map(index);
             }
-            color.Wheel(hue, saturation, luminance);
-
-            if (gamma)
-            {
-                color.Gamma();
-            }
-
+            color.Wheel(hue, saturation, luminance, gamma);
             return color.Pack();
         }
 
