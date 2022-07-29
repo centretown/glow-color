@@ -83,8 +83,7 @@ namespace color
 
             if (gamma)
             {
-                color = color.Gamma();
-                return color.Pack();
+                color.Gamma();
             }
 
             return color.Pack();

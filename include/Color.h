@@ -259,22 +259,20 @@ namespace color
 
         inline color_pack Gamma()
         {
-            Color color;
-            color(gamma8(color.rgbw.red),
-                  gamma8(color.rgbw.green),
-                  gamma8(color.rgbw.blue),
-                  gamma8(color.rgbw.white));
-            return color.Pack();
+            RGBW(gamma8(rgbw.red),
+                 gamma8(rgbw.green),
+                 gamma8(rgbw.blue),
+                 gamma8(rgbw.white));
+            return Pack();
         }
 
         inline color_pack Sine()
         {
-            Color color;
-            color(sine8(color.rgbw.red),
-                  sine8(color.rgbw.green),
-                  sine8(color.rgbw.blue),
-                  sine8(color.rgbw.white));
-            return color.Pack();
+            RGBW(sine8(rgbw.red),
+                 sine8(rgbw.green),
+                 sine8(rgbw.blue),
+                 sine8(rgbw.white));
+            return Pack();
         }
 
     public:
