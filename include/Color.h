@@ -8,13 +8,31 @@
 
 namespace color
 {
+    // hue: 360 degrees = 1530 hue units
+    // enum : uint16_t
+    // {
+    //     DEGREES_360 = 1530,
+    //     DEGREES_180 = DEGREE_360 / 2,
+    //     DEGREES_120 = DEGREE_360 / 3,
+    //     DEGREES_90 = DEGREE_360 / 4,
+    //     DEGREES_60 = DEGREE_360 / 6,
+    //     DEGREES_45 = DEGREE_360 / 8,
+    //     DEGREES_30 = DEGREE_360 / 12,
+    //     DEGREES_15 = DEGREE_360 / 24,
+    //     DEGREES_10 = DEGREE_360 / 36,
+    //     DEGREES_05 = DEGREE_360 / 72,
+    //     DEGREES_01 = DEGREE_360 / 360,
+    // };
+
+    // const uint16_t hue_limit = 1530;
+    const uint16_t hue_limit = 3600;
+    const uint16_t hue_segment = hue_limit / 6;
     const uint16_t hue_red = 0;
-    const uint16_t hue_yellow = 255;
-    const uint16_t hue_green = 510;
-    const uint16_t hue_cyan = 765;
-    const uint16_t hue_blue = 1020;
-    const uint16_t hue_magenta = 1275;
-    const uint16_t hue_limit = 1530;
+    const uint16_t hue_yellow = hue_segment;
+    const uint16_t hue_green = hue_segment * 2;
+    const uint16_t hue_cyan = hue_segment * 3;
+    const uint16_t hue_blue = hue_segment * 4;
+    const uint16_t hue_magenta = hue_segment * 5;
 
     // doubled to allow ranges like:
     // blue-yellow 1020 - 1785
