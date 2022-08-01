@@ -24,8 +24,7 @@ namespace color
     //     DEGREES_01 = DEGREE_360 / 360,
     // };
 
-    // const uint16_t hue_limit = 1530;
-    const uint16_t hue_limit = 6138;
+    const uint16_t hue_limit = 1530;
     const uint16_t hue_segment = hue_limit / 6;
     const uint16_t hue_red = 0;
     const uint16_t hue_yellow = hue_segment;

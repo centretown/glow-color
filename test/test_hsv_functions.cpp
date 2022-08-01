@@ -80,7 +80,7 @@ void testHSVFunctions()
 {
     RUN_TEST(testBenchWheel);
     RUN_TEST(testBenchHSV);
-    // RUN_TEST(testCompare);
+    RUN_TEST(testCompare);
 }
 
 // for (saturation = 0; saturation < saturation_limit; saturation++)
