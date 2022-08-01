@@ -5,8 +5,8 @@
 namespace color
 {
     void Color::Wheel(uint16_t hue,
-                      uint8_t saturation,
-                      uint8_t luminance,
+                      uint16_t saturation,
+                      uint16_t luminance,
                       bool gamma)
     {
         uint8_t red = 0;
@@ -59,7 +59,8 @@ namespace color
         }
 
         uint16_t saturation_multiplier = 1 + saturation;
-        uint8_t saturation_added = 255 - saturation;
+        // uint16_t saturation_added = 255 - saturation;
+        uint16_t saturation_added = hue_segment - saturation;
         uint16_t luminance_multiplier = 1 + luminance;
 
         if (gamma)

@@ -24,8 +24,8 @@ namespace color
     //     DEGREES_01 = DEGREE_360 / 360,
     // };
 
-    const uint16_t hue_limit = 1530;
-    // const uint16_t hue_limit = 3600;
+    // const uint16_t hue_limit = 1530;
+    const uint16_t hue_limit = 6138;
     const uint16_t hue_segment = hue_limit / 6;
     const uint16_t hue_red = 0;
     const uint16_t hue_yellow = hue_segment;
@@ -295,8 +295,8 @@ namespace color
 
     public:
         void Wheel(uint16_t hue,
-                   uint8_t saturation,
-                   uint8_t luminance,
+                   uint16_t saturation,
+                   uint16_t luminance,
                    bool gamma = false);
     };
 } // namespace color
