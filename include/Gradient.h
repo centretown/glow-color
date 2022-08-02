@@ -11,6 +11,7 @@ namespace color
     {
     private:
         Range fit;
+        bool reverse = false;
         friend GradientPalette;
 
     public:
@@ -29,8 +30,22 @@ namespace color
             fit = Pack();
         }
 
+        inline bool Reverse()
+        {
+            return reverse;
+        }
+
+        inline bool Reverse(bool v)
+        {
+            return reverse = v;
+        }
+
         inline uint16_t Map(uint16_t index)
         {
+            if (reverse)
+            {
+                return End() - (index - fit.Begin()) * Length() / fit.Length();
+            }
             return Begin() + (index - fit.Begin()) * Length() / fit.Length();
         }
 

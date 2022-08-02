@@ -8,21 +8,17 @@
 
 namespace color
 {
-    // hue: 360 degrees = 1530 hue units
-    // enum : uint16_t
-    // {
-    //     DEGREES_360 = 1530,
-    //     DEGREES_180 = DEGREE_360 / 2,
-    //     DEGREES_120 = DEGREE_360 / 3,
-    //     DEGREES_90 = DEGREE_360 / 4,
-    //     DEGREES_60 = DEGREE_360 / 6,
-    //     DEGREES_45 = DEGREE_360 / 8,
-    //     DEGREES_30 = DEGREE_360 / 12,
-    //     DEGREES_15 = DEGREE_360 / 24,
-    //     DEGREES_10 = DEGREE_360 / 36,
-    //     DEGREES_05 = DEGREE_360 / 72,
-    //     DEGREES_01 = DEGREE_360 / 360,
-    // };
+    // color schemes / harmonies
+    enum : uint8_t
+    {
+        SCHEME_COMPLEMENTARY,       // 2 hues, opposing ends of wheel (180 deg)
+        SCHEME_SPLIT_COMPLEMENTARY, // 3 hues, 1 key & 2 next to key's complement
+        SCHEME_ANALOGOUS,           // 3 hues, positioned next to each other
+        SCHEME_TRIADIC,             // 3 hues, evenly spaced (120 deg)
+        SCHEME_TETRADIC,            // 1 key, 4 hues equidistant from key
+        SCHEME_SQUARE,              // 4 hues evenly spaced (90 deg)
+        SCHEME_MONOCHROMATIC,       // 1 hue different tones, shades or tints
+    };
 
     const uint16_t hue_limit = 1530;
     const uint16_t hue_segment = hue_limit / 6;

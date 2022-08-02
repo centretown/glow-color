@@ -10,11 +10,8 @@
 #include "ColorHSV.h"
 
 using glow::Benchmark;
-// using glow::Range;
 
 using color::Color;
-// using color::color_pack;
-// using color::color_rgbw;
 using color::hue_limit;
 using color::luminance_size;
 using color::saturation_size;
@@ -74,6 +71,28 @@ void testCompare()
 
         bench_accum += colorHSV + color.Pack();
     }
+
+    for (saturation = 0; saturation < saturation_size; saturation++)
+    {
+        color.Wheel(hue, saturation, luminance);
+
+        uint32_t colorHSV = ColorHSV(hue, saturation, luminance);
+
+        TEST_ASSERT_EQUAL_HEX(colorHSV, color.Pack());
+
+        bench_accum += colorHSV + color.Pack();
+    }
+
+    for (luminance = 0; luminance < luminance_size; luminance++)
+    {
+        color.Wheel(hue, saturation, luminance);
+
+        uint32_t colorHSV = ColorHSV(hue, saturation, luminance);
+
+        TEST_ASSERT_EQUAL_HEX(colorHSV, color.Pack());
+
+        bench_accum += colorHSV + color.Pack();
+    }
 }
 
 void testHSVFunctions()
@@ -82,24 +101,3 @@ void testHSVFunctions()
     RUN_TEST(testBenchHSV);
     RUN_TEST(testCompare);
 }
-
-// for (saturation = 0; saturation < saturation_limit; saturation++)
-// {
-//     color.Wheel(hue, saturation, luminance);
-
-//     uint32_t colorHSV = ColorHSV(hue, saturation, luminance);
-
-//     TEST_ASSERT_EQUAL_HEX(colorHSV, color.Pack());
-
-//     bench_accum += colorHSV + color.Pack();
-// }
-// for (luminance = 0; luminance < luminance_limit; luminance++)
-// {
-//     color.Wheel(hue, saturation, luminance);
-
-//     uint32_t colorHSV = ColorHSV(hue, saturation, luminance);
-
-//     TEST_ASSERT_EQUAL_HEX(colorHSV, color.Pack());
-
-//     bench_accum += colorHSV + color.Pack();
-// }

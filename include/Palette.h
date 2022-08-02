@@ -12,18 +12,6 @@ using glow::range_pack;
 
 namespace color
 {
-    // color harmonies
-    enum : uint8_t
-    {
-        SCHEME_COMPLEMENTARY,       // 2 hues, opposing ends of wheel (180 deg)
-        SCHEME_SPLIT_COMPLEMENTARY, // 3 hues, 1 key & 2 next to key's complement
-        SCHEME_ANALOGOUS,           // 3 hues, positioned next to each other
-        SCHEME_TRIADIC,             // 3 hues, evenly spaced (120 deg)
-        SCHEME_TETRADIC,            // 1 key, 4 hues equidistant from key
-        SCHEME_SQUARE,              // 4 hues evenly spaced (90 deg)
-        SCHEME_MONOCHROMATIC,       // 1 hue different tones, shades or tints
-    };
-
     class Palette : public Range
     {
     protected:
