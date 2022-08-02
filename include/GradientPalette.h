@@ -39,6 +39,7 @@ namespace color
 
         Color color;
 
+        bool reverse = false;
         bool gamma = false;
 
     public:
@@ -95,6 +96,19 @@ namespace color
             hueGradient.Refit();
             saturationGradient.Refit();
             luminanceGradient.Refit();
+        }
+
+        inline bool Reverse()
+        {
+            return reverse;
+        }
+
+        inline bool Reverse(bool v)
+        {
+            hueGradient.Reverse(v);
+            saturationGradient.Reverse(v);
+            luminanceGradient.Reverse(v);
+            return reverse = v;
         }
 
         inline GradientTransition Vary() const { return varied; }
