@@ -21,8 +21,8 @@ void run()
     UNITY_BEGIN();
     testColorDetails();
     testHSVFunctions();
-    testColorPalettes();
-    testGradientPalettes();
+    // testColorPalettes();
+    // testGradientPalettes();
     UNITY_END();
 }
 

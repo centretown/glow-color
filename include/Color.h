@@ -5,10 +5,15 @@
 #include "base.h"
 #include "gamma.h"
 #include "sine.h"
+#include "Math.h"
+#include "ColorWheel.h"
+
+using glow::Max;
+using glow::Min;
 
 namespace color
 {
-    // color schemes / harmonies
+    // color schemes (harmonies)
     enum : uint8_t
     {
         SCHEME_COMPLEMENTARY,       // 2 hues, opposing ends of wheel (180 deg)
@@ -290,8 +295,39 @@ namespace color
 
     public:
         void Wheel(uint16_t hue,
-                   uint16_t saturation,
-                   uint16_t luminance,
+                   uint8_t saturation,
+                   uint8_t luminance,
                    bool gamma = false);
+
+        void Wheel(wheel_pack pack,
+                   bool gamma = false)
+        {
+            ColorWheel wheel(pack);
+            Wheel(wheel.hsv.hue,
+                  wheel.hsv.saturation,
+                  wheel.hsv.luminance,
+                  gamma);
+        }
+
+        wheel_pack ToWheel();
+
+        // SCHEME_COMPLEMENTARY,       // 2 hues, opposing ends of wheel (180 deg)
+        // SCHEME_SPLIT_COMPLEMENTARY, // 3 hues, 1 key & 2 next to key's complement
+        // SCHEME_ANALOGOUS,           // 3 hues, positioned next to each other
+        // SCHEME_TRIADIC,             // 3 hues, evenly spaced (120 deg)
+        // SCHEME_TETRADIC,            // 1 key, 4 hues equidistant from key
+        // SCHEME_SQUARE,              // 4 hues evenly spaced (90 deg)
+        // SCHEME_MONOCHROMATIC,       // 1 hue different tones, shades or tints
+
+        void Complementary(uint16_t hue,
+                           uint16_t saturation,
+                           uint16_t luminance)
+        {
+        }
+
+        // void SplitComplementary(uint16_t hue,
+        //                         uint16_t saturation,
+        //                         uint16_t luminance,
+        //                         bool gamma = false);
     };
 } // namespace color
