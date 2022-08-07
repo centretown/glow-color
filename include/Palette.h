@@ -15,6 +15,9 @@ namespace color
     class Palette : public Range
     {
     protected:
+        Range fit;
+        bool reverse = false;
+
         uint16_t size = 1;
         bool gamma = false;
         bool sine = false;
@@ -24,6 +27,7 @@ namespace color
         {
             size = (v < 1) ? 1 : v;
             Resize(0, size);
+            fit = Pack();
         }
 
         bool Gamma() { return gamma; }
@@ -40,12 +44,42 @@ namespace color
             return Span();
         }
 
+        inline void Fit(Range &range)
+        {
+            fit = range;
+        }
+
+        inline void Refit()
+        {
+            fit = Pack();
+        }
+
+        inline bool Reverse()
+        {
+            return reverse;
+        }
+
+        inline bool Reverse(bool v)
+        {
+            return reverse = v;
+        }
+
         // use Span to constrain Range resizes
         range_pack Span();
 
         inline bool IsMininmum() { return (Begin() == 0 && End() == 1); }
 
-    protected:
+        inline uint16_t Map(uint16_t index)
+        {
+            if (reverse)
+            {
+                return End() - (index - fit.Begin()) * Length() / fit.Length();
+            }
+            return Begin() + (index - fit.Begin()) * Length() / fit.Length();
+        }
+
+        inline const uint16_t FitLength() const { return fit.Length(); }
+
         uint16_t Size(uint16_t v)
         {
             size = v;
