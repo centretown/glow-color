@@ -39,13 +39,20 @@ namespace color
         inline uint16_t Saturation(uint8_t v) { return values[VARY_SATURATION] = v; }
         inline uint16_t Luminance(uint8_t v) { return values[VARY_LUMINANCE] = v; }
 
+        inline void HSL(uint16_t h, uint8_t s, uint8_t l)
+        {
+            values[VARY_HUE] = h;
+            values[VARY_SATURATION] = s;
+            values[VARY_LUMINANCE] = l;
+        }
+
         inline GradientVaried Vary(GradientVaried v,
-                                   uint16_t transition_size = 0)
+                                   uint16_t palette_size = 0)
         {
             varied = v;
-            if (transition_size > 0)
+            if (palette_size > 0)
             {
-                Size(transition_size);
+                Size(palette_size);
             }
             else if (v == VARY_HUE)
             {
@@ -53,6 +60,7 @@ namespace color
             }
             else
             {
+                // same as luminance size
                 Size(saturation_size);
             }
             return varied;
@@ -61,7 +69,7 @@ namespace color
         // implement
         inline color_pack Map(uint16_t index)
         {
-            values[varied] = index;
+            values[varied] = Palette::Map(index);
             color.Wheel(Hue(), Saturation(), Luminance(), gamma);
             return color.Pack();
         }

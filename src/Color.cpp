@@ -9,11 +9,15 @@ namespace color
                       uint8_t luminance,
                       bool gamma)
     {
+        if (hue > hue_limit)
+        {
+            hue -= hue_limit;
+        }
+
         uint8_t red = 0;
         uint8_t green = 0;
         uint8_t blue = 0;
 
-        hue %= hue_limit;
         if (hue < hue_green)
         {
             if (hue < hue_yellow)

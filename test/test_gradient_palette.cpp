@@ -89,6 +89,7 @@ void testHueGradient()
 
     palette(hue_red, hue_yellow);
     palette.Fit(range);
+    palette.HSL(hue_red, 255, 255);
     color.Wheel(hue_red, 255, 255);
     putter(color.Pack(), "red to yellow");
     range.SpinValues(putter, palette);
@@ -124,6 +125,7 @@ void testSaturationGradient()
     palette(127, 255);
     palette.Fit(range);
     color.Wheel(hue_red, 255, 255);
+    palette.HSL(hue_red, 255, 255);
     putter(color.Pack(), "127 to 255");
     range.SpinValues(putter, palette);
 
@@ -144,14 +146,19 @@ void testLuminanceGradient()
 
     const uint16_t test_end = 40;
     Range range(0, test_end);
+    palette.HSL(hue_red, 255, 255);
     palette.Fit(range);
     TEST_ASSERT_EQUAL(range.Length(), palette.FitLength());
     palette.Refit();
     TEST_ASSERT_EQUAL(palette.Length(), palette.FitLength());
-    palette.Hue(hue_blue);
+    palette.HSL(hue_blue, 255, 255);
     palette.Saturation(saturation_size);
 
     Putter putter;
+    range.SpinValues(putter, palette);
+    palette.HSL(hue_green, 255, 255);
+    palette(1, 127);
+    palette.Fit(range);
     range.SpinValues(putter, palette);
 }
 
