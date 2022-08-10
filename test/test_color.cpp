@@ -12,9 +12,8 @@ void testColorPalettes();
 void testGradientPalettes();
 
 glow::PinDevice blinkPin;
-glow::BlinkSettings blink(&blinkPin);
-glow::BlinkMonitor monitor(&blink);
-glow::BlinkActivity blinker(&monitor, &blink);
+glow::BlinkUpdater blink(&blinkPin);
+glow::BlinkActivity blinker(blink);
 
 void run()
 {
